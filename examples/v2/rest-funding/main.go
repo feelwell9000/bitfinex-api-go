@@ -21,7 +21,6 @@ func main() {
 	key := os.Getenv("BFX_API_KEY")
 	secret := os.Getenv("BFX_API_SECRET")
 	c := rest.NewClient().Credentials(key, secret)
-
 	offers(c)
 	offerHistory(c)
 	loans(c)

@@ -190,6 +190,24 @@ func (fs *FundingService) CancelOffer(fc *fundingoffer.CancelRequest) (*notifica
 	return notification.FromRaw(raw)
 }
 
+// Submits a request to cancel the given offer
+// see https://docs.bitfinex.com/reference#cancel-funding-offer for more info
+func (fs *FundingService) CancelAllOffers(fc *fundingoffer.CancelAllRequest) (*notification.Notification, error) {
+	bytes, err := fc.ToJSON()
+	if err != nil {
+		return nil, err
+	}
+	req, err := fs.requestFactory.NewAuthenticatedRequestWithBytes(common.PermissionWrite, "funding/offer/cancel/all", bytes)
+	if err != nil {
+		return nil, err
+	}
+	raw, err := fs.Request(req)
+	if err != nil {
+		return nil, err
+	}
+	return notification.FromRaw(raw)
+}
+
 // KeepFunding - toggle to keep funding taken. Specify loan for unused funding and credit for used funding.
 // see https://docs.bitfinex.com/reference#rest-auth-keep-funding for more info
 func (fs *FundingService) KeepFunding(args KeepFundingRequest) (*notification.Notification, error) {
